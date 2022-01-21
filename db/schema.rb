@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 2022_01_17_191844) do
 
   create_table "advertisements", force: :cascade do |t|
     t.integer "user_id"
-    t.string "title"
-    t.string "description"
+    t.string "title", null: false
+    t.text "description", null: false
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -30,11 +30,11 @@ ActiveRecord::Schema.define(version: 2022_01_17_191844) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "role_id"
+  create_table "user", force: :cascade do |t|
+    t.integer "role_id"
     t.string "login"
-    t.string "password"
-    t.string "email"
+    t.string "password", null: false
+    t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
