@@ -3,23 +3,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     user = User.create(user_params)
+    respond_with(user, _opts = {})
   end
+
   private
+
   def user_params
     params.require(:user).permit(:email, :password, :login, :role_id)
   end
 
-  def respond_with(resource, _opts = {})
-    register_success && return if resource.persisted?
-
-    register_failed
-  end
-
-  def register_success
-    render json: { message: 'Signed up sucessfully.' }
-  end
-
-  def register_failed
-    render json: { message: "Something went wrong." }
+  def respond_with(user, _opts = {})
+    if user.persisted?
+      render json: {
+        status: {code: 200, message: 'Signed up sucessfully.'}
+      }
+    else
+      render json: {
+        status: {message: "User couldn't be created successfully"}
+      }, status: :unprocessable_entity
+    end
   end
 end
