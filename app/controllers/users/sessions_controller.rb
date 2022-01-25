@@ -1,14 +1,18 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
-  def new
-    render json: {response: "Authentication required"}, status: 401
-  end
-
   private
 
-  def respond_with(resource, _opts = {})
-    render json: { message: 'You are logged in.' }, status: :ok
+  def respond_with (resource, _opts)
+    unless current_user.nil?
+      render json: {
+        message: 'Logged in.'
+      }, status: :ok
+    else
+      render json: {
+        message: 'Wrong email or password',
+      }, status: :unprocessable_entity
+    end
   end
 
   def respond_to_on_destroy

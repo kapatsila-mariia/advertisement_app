@@ -3,7 +3,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     user = User.create(user_params)
-    respond_with(user, _opts = {})
+    respond_with(user)
   end
 
   private
@@ -12,8 +12,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     params.require(:user).permit(:email, :password, :login, :role_id)
   end
 
-  def respond_with(user, _opts = {})
-    if user.persisted?
+  def respond_with(user)
+    if user.persisted
       render json: {
         status: {code: 200, message: 'Signed up sucessfully.'}
       }

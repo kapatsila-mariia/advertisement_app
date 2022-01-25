@@ -720,3 +720,90 @@ Processing by MembersController#show as */*
 Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 2.1ms | Allocations: 3154)
 
 
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:41:00 +0200
+  [1m[35m (22.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (17.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 200 OK in 611ms (Views: 0.2ms | ActiveRecord: 124.6ms | Allocations: 13069)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:41:07 +0200
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 270ms (ActiveRecord: 0.4ms | Allocations: 1406)
+
+
+Processing by Users::SessionsController#new as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+Completed 422 Unprocessable Entity in 272ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 745)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:43:02 +0200
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 273ms (ActiveRecord: 3.1ms | Allocations: 6718)
+
+
+Processing by Users::SessionsController#new as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+Completed 500 Internal Server Error in 258ms (ActiveRecord: 0.0ms | Allocations: 390)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 0)):
+  
+app/controllers/users/sessions_controller.rb:6:in `respond_with'
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:48:15 +0200
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 366ms (ActiveRecord: 20.2ms | Allocations: 8570)
+
+
+Processing by Users::SessionsController#new as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+Completed 200 OK in 261ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 464)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:50:09 +0200
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 294ms (ActiveRecord: 7.7ms | Allocations: 6785)
+
+
+Processing by Users::SessionsController#new as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+Completed 500 Internal Server Error in 269ms (ActiveRecord: 0.0ms | Allocations: 378)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 0)):
+  
+app/controllers/users/sessions_controller.rb:6:in `respond_with'
+Started GET "/favicon.ico" for 127.0.0.1 at 2022-01-25 21:53:57 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:58:00 +0200
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 284ms (ActiveRecord: 5.1ms | Allocations: 8590)
+
+
+Processing by Users::SessionsController#new as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+Completed 422 Unprocessable Entity in 260ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 465)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2022-01-25 21:58:07 +0200
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"nick1@user.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "nick1@user.com"], ["LIMIT", 1]]
+Completed 200 OK in 270ms (Views: 0.1ms | ActiveRecord: 0.3ms | Allocations: 1706)
+
+
