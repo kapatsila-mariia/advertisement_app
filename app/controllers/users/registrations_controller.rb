@@ -13,7 +13,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def respond_with(user)
-    if user.persisted
+    if user.persisted?
       render json: {
         status: {code: 200, message: 'Signed up sucessfully.'}
       }
