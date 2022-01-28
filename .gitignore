@@ -16,11 +16,18 @@ rerun.txt
 pickle-email-*.html
 
 # Ignore all logfiles and tempfiles.
-/log
-/log/*
-/tmp/*
+log/*
+!log/.keep
+tmp/*
+!tmp/.keep
+!tmp/pids
+!tmp/storage
+tmp/pids/*
+!tmp/pids/.keep
+tmp/storage/*
+!tmp/storage/.keep
 !/log/.keep
-!/tmp/.keep
+
 
 # TODO Comment out this rule if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb
@@ -82,7 +89,7 @@ yarn-debug.log*
 /spec/examples.txt
 /test/tmp/
 /test/version_tmp/
-/tmp/
+
 
 # Used by dotenv library to load environment variables.
 # .env
