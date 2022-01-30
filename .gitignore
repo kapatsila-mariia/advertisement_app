@@ -26,7 +26,7 @@ tmp/pids/*
 !tmp/pids/.keep
 tmp/storage/*
 !tmp/storage/.keep
-!/log/.keep
+
 
 
 # TODO Comment out this rule if you are OK with secrets being uploaded to the repo
