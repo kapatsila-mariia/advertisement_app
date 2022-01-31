@@ -30,11 +30,10 @@ class CommentsController < ApplicationController
   def update
     @comment = @advert.comments.find(params[:id])
 
-    case @comment
-    when :nil? || user_id.nil?
-      render json: { message: "Info doesn't exist" }, status: :not_found
+    if @comment.nil? || @comment.user_id.nil?
+      render json: { message: "Comment doesn't exist" }, status: :not_found
     else
-      current_user.comments.update(comment_params)
+      @comment.update(comment_params)
       render json: @comment, status: :ok
     end
 
@@ -42,12 +41,16 @@ class CommentsController < ApplicationController
 
   private
 
+  def is_admin
+    current_user.role_id == 2
+  end
+  
   def is_admin_or_owner
     @comment = @advert.comments.find(params[:id])
 
     if  @comment.nil? || @comment.user_id.nil?
       render status: :not_found
-    elsif current_user.role_id == 2 || @comment.user_id == current_user.id
+    elsif is_admin || @comment.user_id == current_user.id
       return
     else
       render json: nil, status: :forbidden
