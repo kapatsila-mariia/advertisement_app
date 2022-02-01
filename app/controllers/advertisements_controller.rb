@@ -7,13 +7,13 @@ class AdvertisementsController < ApplicationController
   def index
     @advertisements = Advertisement.all
 
-    render(json:@advertisements)
+    render json:@advertisements#, serializer: AdvertisementsSerializer
   end
 
   def show
 
     @advertisement = Advertisement.find(params[:id])
-    render(json:@advertisement)
+    render json:@advertisement, serializer: AdvertisementsSerializer
   end
 
   def create
@@ -31,7 +31,7 @@ class AdvertisementsController < ApplicationController
     @advertisement = Advertisement.find(params[:id])
     @advertisement.update(advert_params)
 
-    render json:  @advertisement, status: :accepted
+    render json:  @advertisement, status: :accepted, serializer: AdvertisementsSerializer
   end
 
   def destroy
@@ -48,7 +48,7 @@ class AdvertisementsController < ApplicationController
 
     if  @advertisement.nil? or @advertisement.user_id.nil?
       render status: :not_found
-    elsif current_user.role_id == 2 || @advertisement.user_id == current_user.id
+    elsif is_admin? || @advertisement.user_id == current_user.id
       return
     else
       render json: { message: "Access forbidden." }, status: :forbidden
@@ -58,4 +58,5 @@ class AdvertisementsController < ApplicationController
   def advert_params
     params.require(:advertisement).permit(:title, :description, :status)
   end
+
 end
