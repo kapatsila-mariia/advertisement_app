@@ -43,16 +43,12 @@ class AdvertisementsController < ApplicationController
 
   private
 
-  def is_admin
-    current_user.role_id == 2
-  end
-
   def is_admin_or_owner
     @advertisement = Advertisement.find(params[:id])
 
     if  @advertisement.nil? or @advertisement.user_id.nil?
       render status: :not_found
-    elsif is_admin || @advertisement.user_id == current_user.id
+    elsif is_admin? || @advertisement.user_id == current_user.id
       return
     else
       render json: { message: "Access forbidden." }, status: :forbidden
@@ -62,4 +58,5 @@ class AdvertisementsController < ApplicationController
   def advert_params
     params.require(:advertisement).permit(:title, :description, :status)
   end
+
 end
