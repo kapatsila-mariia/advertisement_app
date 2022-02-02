@@ -22,16 +22,18 @@ class AdvertisementsController < ApplicationController
     if @advertisement.save
       render json: { message: "Advertisement created" }, status: :created
     else
-      render json: { message: "Something went wrong." },status: :bad_request
+      render json: @advertisement.errors.full_messages, status: :bad_request
     end
 
   end
 
   def update
-    @advertisement = Advertisement.find(params[:id])
-    @advertisement.update(advert_params)
-
-    render json:  @advertisement, status: :accepted, serializer: AdvertisementsSerializer
+    if @advertisement.nil? || @advertisement.user_id.nil?
+      render json: @advertisement.errors.full_messages, status: :bad_request
+    else
+      @advertisement.update(advert_params)
+      render json: @advertisement, serializer: AdvertisementsSerializer
+    end
   end
 
   def destroy
@@ -48,11 +50,22 @@ class AdvertisementsController < ApplicationController
 
     if  @advertisement.nil? or @advertisement.user_id.nil?
       render status: :not_found
-    elsif is_admin? || @advertisement.user_id == current_user.id
+    elsif is_admin? #|| @advertisement.user_id == current_user.id
       return
     else
       render json: { message: "Access forbidden." }, status: :forbidden
     end
+  end
+
+  def is_owner
+    @advertisement = Advertisement.find(params[:id])
+    if  @advertisement.nil? or @advertisement.user_id.nil?
+      render status: :not_found
+    elsif @advertisement.user_id == current_user.id
+      return
+    else
+      render json: { message: "Access forbidden." }, status: :forbidden
+      end
   end
 
   def advert_params

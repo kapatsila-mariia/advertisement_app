@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
     if @comment.save
       render json: @comment, status: :created
     else
-      render json: { message: "Can't create a comment" },status: :bad_request
+      render json: @comment.errors, status: :bad_request
     end
 
   end
@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
     @comment = @advert.comments.find(params[:id])
 
     if @comment.nil? || @comment.user_id.nil?
-      render json: { message: "Comment doesn't exist" }, status: :not_found
+      render json: @comment.errors.full_message, status: :bad_request
     else
       @comment.update(comment_params)
       render json: @comment, status: :ok
