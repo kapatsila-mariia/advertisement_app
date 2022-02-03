@@ -1,5 +1,6 @@
 class AdvertisementsController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_advert, only: [:show, :update, :destroy]
   before_action only: [:update, :destroy] do
     is_valid_record?
   end
@@ -11,8 +12,6 @@ class AdvertisementsController < ApplicationController
   end
 
   def show
-
-    @advertisement = Advertisement.find(params[:id])
     render json:@advertisement, serializer: AdvertisementsSerializer
   end
 
@@ -28,7 +27,6 @@ class AdvertisementsController < ApplicationController
   end
 
   def update
-    @advertisement = Advertisement.find(params[:id])
 
     if is_owner?
       @advertisement.update(advert_params)
@@ -44,7 +42,6 @@ class AdvertisementsController < ApplicationController
 
   def destroy
     if is_owner? || current_user.is_admin?
-    @advertisement = Advertisement.find(params[:id])
     @advertisement.destroy
 
     render json: { message: "Advertisement deleted." }, status: :accepted
@@ -58,17 +55,18 @@ class AdvertisementsController < ApplicationController
 
 
   def is_owner?
-    @advertisement = Advertisement.find(params[:id])
-
     @advertisement.user_id == current_user.id
-
   end
 
   def is_valid_record?
-    @advertisement = Advertisement.find(params[:id])
+
     unless @advertisement.nil? || @advertisement.user_id.nil?
       return
       end
+  end
+
+  def find_advert
+    @advertisement = Advertisement.find(params[:id])
   end
 
   def advert_params

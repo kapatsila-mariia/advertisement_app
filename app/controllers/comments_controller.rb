@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :get_advert
+  before_action :find_comment, only: [:show, :update, :destroy]
   before_action only: [:update, :destroy] do
     is_valid_comment?
   end
@@ -11,7 +12,6 @@ class CommentsController < ApplicationController
   end
 
   def show
-    @comment = @advert.comments.find(params[:id])
     render json: @comment
   end
 
@@ -28,7 +28,6 @@ class CommentsController < ApplicationController
   end
 
   def update
-    @comment = @advert.comments.find(params[:id])
 
     if is_owner? || current_user.is_admin?
       @comment.update(comment_params)
@@ -40,7 +39,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = @advert.comments.find(params[:id])
+
     if is_owner? || current_user.is_admin?
       @comment.destroy
 
@@ -48,18 +47,20 @@ class CommentsController < ApplicationController
     else
       render json: { message: "You can't delete this comment." }, status: :forbidden
     end
+
   end
 
   private
 
-  def is_owner?
+  def find_comment
     @comment = @advert.comments.find(params[:id])
+  end
 
+  def is_owner?
     @comment.user_id == current_user.id
   end
 
   def is_valid_comment?
-    @comment = @advert.comments.find(params[:id])
     unless @comment.nil? || @comment.user_id.nil?
     return
     end
