@@ -1,13 +1,13 @@
 class AdvertisementsController < ApplicationController
   before_action :authenticate_user!
   before_action only: [:update, :destroy] do
-    is_admin_or_owner
+    is_valid_record?
   end
 
   def index
     @advertisements = Advertisement.all
 
-    render json:@advertisements#, serializer: AdvertisementsSerializer
+    render json: @advertisements
   end
 
   def show
@@ -28,48 +28,55 @@ class AdvertisementsController < ApplicationController
   end
 
   def update
-    if @advertisement.nil? || @advertisement.user_id.nil?
-      render json: @advertisement.errors.full_messages, status: :bad_request
-    else
+    @advertisement = Advertisement.find(params[:id])
+
+    if is_owner?
       @advertisement.update(advert_params)
-      render json: @advertisement, serializer: AdvertisementsSerializer
+      render json: @advertisement
+    elsif current_user.is_admin?
+      @advertisement.update(advert_params_admin)
+      render json: @advertisement
+    else
+      render json: { message: "You can't update this advertisement." }, status: :forbidden
     end
+
   end
 
   def destroy
+    if is_owner? || current_user.is_admin?
     @advertisement = Advertisement.find(params[:id])
     @advertisement.destroy
 
-    render json: { message: "Advertisement deleted by user." }, status: :accepted
+    render json: { message: "Advertisement deleted." }, status: :accepted
+    else
+      render json: { message: "You can't delete this advertisement." }, status: :forbidden
+    end
   end
 
   private
 
-  def is_admin_or_owner
+
+
+  def is_owner?
     @advertisement = Advertisement.find(params[:id])
 
-    if  @advertisement.nil? or @advertisement.user_id.nil?
-      render status: :not_found
-    elsif is_admin? #|| @advertisement.user_id == current_user.id
-      return
-    else
-      render json: { message: "Access forbidden." }, status: :forbidden
-    end
+    @advertisement.user_id == current_user.id
+
   end
 
-  def is_owner
+  def is_valid_record?
     @advertisement = Advertisement.find(params[:id])
-    if  @advertisement.nil? or @advertisement.user_id.nil?
-      render status: :not_found
-    elsif @advertisement.user_id == current_user.id
+    unless @advertisement.nil? || @advertisement.user_id.nil?
       return
-    else
-      render json: { message: "Access forbidden." }, status: :forbidden
       end
   end
 
   def advert_params
-    params.require(:advertisement).permit(:title, :description, :status)
+    params.permit(:title, :description)
+  end
+
+  def advert_params_admin
+    params.permit(:title, :description, :status)
   end
 
 end

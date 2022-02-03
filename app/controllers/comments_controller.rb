@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :get_advert
   before_action only: [:update, :destroy] do
-    is_admin_or_owner
+    is_valid_comment?
   end
 
   def index
@@ -30,28 +30,39 @@ class CommentsController < ApplicationController
   def update
     @comment = @advert.comments.find(params[:id])
 
-    if @comment.nil? || @comment.user_id.nil?
-      render json: @comment.errors.full_message, status: :bad_request
-    else
+    if is_owner? || current_user.is_admin?
       @comment.update(comment_params)
       render json: @comment, status: :ok
+    else
+      render json: { message: "You can't update this comment." }, status: :bad_request
     end
 
   end
 
+  def destroy
+    @comment = @advert.comments.find(params[:id])
+    if is_owner? || current_user.is_admin?
+      @comment.destroy
+
+      render json: { message: "Comment deleted." }, status: :accepted
+    else
+      render json: { message: "You can't delete this comment." }, status: :forbidden
+    end
+  end
+
   private
-  
-  def is_admin_or_owner
+
+  def is_owner?
     @comment = @advert.comments.find(params[:id])
 
-    if  @comment.nil? || @comment.user_id.nil?
-      render status: :not_found
-    elsif is_admin? || @comment.user_id == current_user.id
-      return
-    else
-      render json: nil, status: :forbidden
-    end
+    @comment.user_id == current_user.id
+  end
 
+  def is_valid_comment?
+    @comment = @advert.comments.find(params[:id])
+    unless @comment.nil? || @comment.user_id.nil?
+    return
+    end
   end
 
   def get_advert

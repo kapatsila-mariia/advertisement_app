@@ -16,4 +16,9 @@ class User < ApplicationRecord
          :jwt_authenticatable,
          :registerable,
          jwt_revocation_strategy: JwtDenylist
+
+  def is_admin?
+    self.role.name == "admin"
+  end
+
 end
