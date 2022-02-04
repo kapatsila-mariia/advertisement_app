@@ -18,9 +18,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         status: {code: 200, message: 'Signed up sucessfully.'}
       }
     else
-      render json: {
-        status: {message: "User couldn't be created successfully"}
-      }, status: :unprocessable_entity
+      render json: user.errors.full_messages, status: :bad_request
     end
   end
 end

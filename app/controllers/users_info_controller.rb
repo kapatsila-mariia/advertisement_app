@@ -17,7 +17,7 @@ class UsersInfoController < ApplicationController
       if @user_info.save
         render json: @user_info, status: :created, serializer: UsersInfoSerializer
       else
-        render json: { message: "Info exist." },status: :bad_request
+        render json: @user_info.errors, status: :bad_request
       end
     end
 
