@@ -9,7 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :login, :role_id)
+    params.require(:user).permit(:email, :password, :login)
   end
 
   def respond_with(user)

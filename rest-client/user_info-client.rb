@@ -22,7 +22,7 @@ def create_info
 
                                             first_name: "Lola",
                                             last_name: "Lu",
-                                            phone: "380"
+                                            phone: "3802345223"
                                           },
                                           headers: {:authorization => "Bearer #{@token}"} )
 

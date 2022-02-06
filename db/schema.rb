@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_094803) do
+ActiveRecord::Schema.define(version: 2022_02_06_170404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2022_01_30_094803) do
     t.integer "user_id"
     t.string "title", null: false
     t.text "description", null: false
-    t.string "status"
+    t.string "status", default: "created"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -45,9 +45,8 @@ ActiveRecord::Schema.define(version: 2022_01_30_094803) do
   end
 
   create_table "users", id: :bigint, default: -> { "nextval('user_id_seq'::regclass)" }, force: :cascade do |t|
-    t.integer "role_id"
+    t.integer "role_id", default: 1
     t.string "login"
-    t.string "password"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", default: "", null: false
