@@ -20,9 +20,9 @@ def create_info
                                           url: @server + "/users_info",
                                           payload: {
 
-                                            first_name: "Lola",
+                                            first_name: "L",
                                             last_name: "Lu",
-                                            phone: "380"
+                                            phone: "3802345223"
                                           },
                                           headers: {:authorization => "Bearer #{@token}"} )
 

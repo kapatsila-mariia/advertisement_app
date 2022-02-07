@@ -1,23 +1,22 @@
 class UsersInfoController < ApplicationController
   before_action :authenticate_user!
-
+  before_action :is_valid?, only: [:show, :update, :destroy]
+  
   def show
     @user_info = current_user.users_info
-    if @user_info.nil? || @user_info.user_id.nil?
-      render json: { message: "Info doesn't exist" }, status: :not_found
-    else
-      render json: @user_info, serializer: UsersInfoSerializer
-    end
+   
+    render json: @user_info, serializer: UsersInfoSerializer
+    
   end
 
   def create
     @user_info = current_user.users_info
     if @user_info.nil? || @user_info.user_id.nil?
       @user_info = current_user.build_users_info(user_info_params)
-      if @user_info.save
-        render json: @user_info, status: :created, serializer: UsersInfoSerializer
-      else
+      unless @user_info.save
         render json: @user_info.errors, status: :bad_request
+      else
+        render json: @user_info, status: :ok, serializer: UsersInfoSerializer
       end
     end
 
@@ -25,12 +24,8 @@ class UsersInfoController < ApplicationController
 
   def update
     @user_info = current_user.users_info
-    if @user_info.nil? || @user_info.user_id.nil?
-      render json: { message: "Info doesn't exist" }, status: :not_found
-    else
-      current_user.users_info.update(user_info_params)
-      render json: @user_info, status: :ok, serializer: UsersInfoSerializer
-    end
+    current_user.users_info.update(user_info_params)
+    render json: @user_info, status: :ok, serializer: UsersInfoSerializer
   end
 
   def destroy
@@ -39,7 +34,13 @@ class UsersInfoController < ApplicationController
   end
 
   private
-
+  
+  def is_valid?
+    unless @user_info.nil? || @user_info.user_id.nil?
+      return
+    end
+  end
+  
   def user_info_params
     params.permit(:first_name, :last_name, :phone)
   end

@@ -18,28 +18,27 @@ class AdvertisementsController < ApplicationController
   def create
     @advertisement = current_user.advertisements.new(advert_params)
 
-    if @advertisement.save
-      render json: { message: "Advertisement created" }, status: :created
-    else
+    unless @advertisement.save
       render json: @advertisement.errors.full_messages, status: :bad_request
+    else
+      render json: @advertisement, status: :accepted
     end
-
   end
 
   def update
 
     if is_owner?
       @advertisement.update(advert_params)
-      render json: @advertisement
+      adv_updated?
     elsif current_user.is_admin?
       @advertisement.update(advert_params_admin)
-      render json: @advertisement
+      adv_updated?
     else
       render json: { message: "You can't update this advertisement." }, status: :forbidden
     end
 
   end
-
+  
   def destroy
     if is_owner? || current_user.is_admin?
     @advertisement.destroy
@@ -52,7 +51,13 @@ class AdvertisementsController < ApplicationController
 
   private
 
-
+  def adv_updated?
+    unless @advertisement.update(advert_params) || @advertisement.update(advert_params_admin)
+      render json: @advertisement.errors.full_messages, status: :bad_request
+    else
+      render json: @advertisement, status: :accepted
+    end
+  end
 
   def is_owner?
     @advertisement.user_id == current_user.id

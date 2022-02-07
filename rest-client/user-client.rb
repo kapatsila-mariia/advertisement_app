@@ -30,8 +30,8 @@ def sign_in
                                          url: @server + "/users/sign_in",
                                          payload: {
                                            user:{
-                                             email: "nick1@user.com",
-                                             password: "123456"
+                                             email: "admin@gmail.com",
+                                             password: "Qwerty123"
                                            }
                                          }
   )
@@ -45,6 +45,41 @@ def sign_out
   sign_in
   response = RestClient::Request.execute(method: :delete,
                                          url: @server + "/users/sign_out",
+                                         headers: {:authorization => "Bearer #{@token}"}
+  )
+  puts response
+
+end
+
+def show_user
+  sign_in
+  response = RestClient::Request.execute(method: :get,
+                                         url: @server + "/users/43",
+                                         headers: {:authorization => "Bearer #{@token}"}
+  )
+  puts response
+
+end
+
+def update_user
+  response = RestClient::Request.execute(method: :patch,
+                                         url: @server + "/users/43",
+                                         payload: {
+                                             email: "noname@mail.com",
+                                             password: "Qwerty123",
+                                             role_id: 1
+                                         },
+                                         headers: {:authorization => "Bearer #{@token}"},
+
+  )
+
+  puts response
+end
+
+def delete_user
+  sign_in
+  response = RestClient::Request.execute(method: :delete,
+                                         url: @server + "/users/9",
                                          headers: {:authorization => "Bearer #{@token}"}
   )
   puts response
