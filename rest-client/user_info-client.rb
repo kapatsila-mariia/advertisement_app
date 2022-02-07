@@ -20,7 +20,7 @@ def create_info
                                           url: @server + "/users_info",
                                           payload: {
 
-                                            first_name: "Lola",
+                                            first_name: "L",
                                             last_name: "Lu",
                                             phone: "3802345223"
                                           },

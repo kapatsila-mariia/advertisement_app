@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post 'users_info', to: 'users_info#create', param: :_user_id
   patch 'users_info', to: 'users_info#update', param: :_user_id
   delete 'users_info', to: 'users_info#destroy', param: :_user_id
-  
+  resources :users
   resources :advertisements do
     resources :comments
   end

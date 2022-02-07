@@ -26,9 +26,9 @@ def create_comment
   sign_in
   begin
   response = RestClient::Request.execute( method: :post,
-                                          url: @server + "/advertisements/4/comments",
+                                          url: @server + "/advertisements/5/comments",
                                           payload: {
-                                            comment_text: ""
+                                            comment_text: "nice"
                                             },
                                           headers: {:authorization => "Bearer #{@token}"} )
 

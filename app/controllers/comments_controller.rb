@@ -19,14 +19,18 @@ class CommentsController < ApplicationController
     @comment = @advert.comments.create(comment_params)
     @comment.user_id = current_user.id
 
-    comment_save?
+    unless @comment.save
+      render json: @comment.errors, status: :bad_request
+    else
+      render json: @comment, status: :ok
+    end
   end
 
   def update
 
     if is_owner? || current_user.is_admin?
       @comment.update(comment_params)
-      comment_save?
+      comment_update?
     else
       render json: { message: "You can't update this comment." }, status: :bad_request
     end
@@ -47,8 +51,8 @@ class CommentsController < ApplicationController
 
   private
 
-  def comment_save?
-    unless @comment.save
+  def comment_update?
+    unless @comment.update(comment_params)
       render json: @comment.errors, status: :bad_request
     else
       render json: @comment, status: :ok
